@@ -1,1 +1,131 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+
+// Importa la fuente
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+// Variables para colores y tamaños
+$primary-color: #007bff;
+$hover-color: #e6f7ff;
+$active-border-color: #007bff;
+$text-color-dark: #333;
+$text-color-light: #555;
+$bg-primary: #f0f2f5;
+$bg-white: #ffffff;
+$border-color: #e0e0e0;
+$shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+$sidebar-bg: #2c3e50; // Un color oscuro y moderno
+$sidebar-text: #ecf0f1; // Texto claro para contraste
+$sidebar-hover: #34495e;
+$active-link-bg: #3498db; // Un color azul vivo
+$active-link-text: #ffffff;
+
+
+// Estilos Generales
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: $bg-primary;
+  color: $text-color-dark;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// Estilos del Encabezado (Header)
+app-header {
+  header {
+    background-color: $bg-white;
+    padding: 1rem 2rem;
+    box-shadow: $shadow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+
+    img {
+        width: 250px;
+        height: 45px;
+    
+      }
+
+    .logo {
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #0a0a0a;
+        margin: 0;
+      }
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+
+      span {
+        font-weight: bold;
+        color: $text-color-dark;
+        margin-right: 10px;
+
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+      }
+    }
+  }
+}
+
+// Estilos del Menú Lateral (Sidebar)
+.content-container {
+  display: flex;
+  flex: 1;
+  
+
+  app-sidebar {
+    nav {
+      width: 250px;
+      background-color: $sidebar-bg;
+      padding: 0;
+      //border-color: #0a0a0a;
+      border-right: none; // Eliminamos el borde
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-bottom: 0;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          text-decoration: none;
+          color: $sidebar-text;
+          font-weight: 300;
+          transition: background-color 0.3s;
+          
+          // Efecto hover y activo
+          &:hover {
+            background-color: $sidebar-hover;
+          }
+
+          &.active {
+            background-color: $active-link-bg;
+            color: $active-link-text;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
