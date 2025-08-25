@@ -9,7 +9,7 @@ $card-background: #fff;
 $border-color: #e0e0e0;
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   margin: 0;
   padding: 0;
 }
@@ -48,6 +48,7 @@ h2 {
   color: $text-color-dark;
   margin-bottom: 0.75rem;
   font-weight: 600;
+  font-family: 'Poppins';
 }
 
 p {
@@ -84,6 +85,7 @@ p {
   margin-bottom: 1rem; /* Espacio antes del botón */
   font-size: 0.9rem;
   font-weight: bold;
+  font-family: 'Poppins';
 
   a {
     color: $primary-color; /* Un color más sutil */
@@ -131,6 +133,7 @@ button {
 
   span {
     vertical-align: middle;
+    font-family: 'Poppins';
   }
 }
 
@@ -154,7 +157,8 @@ button {
   a {
     color: $primary-color;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: bold;
+    font-family: 'Poppins';
 
     &:hover {
       text-decoration: underline;
@@ -163,6 +167,8 @@ button {
 
   span {
     margin: 0 0.5rem;
+    font-size: 0.9rem;
+     font-family: 'Poppins';
   }
 }
 

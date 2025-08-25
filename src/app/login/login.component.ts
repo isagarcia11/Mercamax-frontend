@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Necesario para directivas como ngIf
+import { CommonModule } from '@angular/common'; 
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
