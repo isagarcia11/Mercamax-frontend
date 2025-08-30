@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
 
 
 @Component({
@@ -11,8 +12,15 @@ import { Component } from '@angular/core';
 
 })
 export class HeaderComponent {
-  userName: string = '';
-  // Propiedad para controlar si el menú desplegable está abierto
+  userName: string = ''; //Se debe de recuperar del back
+
+  
+  @Output() toggleMenu = new EventEmitter<void>();
+
+  toggleSidebar() {
+    this.toggleMenu.emit();
+  }
+  
   isDropdownOpen: boolean = false;
 
   constructor() {}

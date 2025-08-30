@@ -54,7 +54,13 @@ html, body {
   margin-left: $sidebar-width;
   padding: 20px;
   flex: 1; 
+
+   @media (max-width: 768px) {
+    margin-left: 0; 
+  }
 }
+
+
 
 // ------------------------------------
 // Estilos del Encabezado (Header)
@@ -96,8 +102,22 @@ app-header {
 
       // Estilos para el menú de usuario desplegable
       .profile-dropdown {
+        font-family: 'Roboto', sans-serif;
         position: relative;
         cursor: pointer;
+
+        @media (max-width: 768px) {
+          header {
+            padding: 1rem 1.5rem; 
+            .logo img {
+              width: 150px; 
+              height: auto;
+            }
+            .user-profile span {
+              display: none; 
+            }
+          }
+        }
 
         img {
           width: 40px;
@@ -107,6 +127,7 @@ app-header {
         }
 
         .dropdown-menu {
+          font-family: 'Roboto', sans-serif;
           position: absolute;
           top: 100%;
           right: 0;
@@ -157,6 +178,19 @@ app-side-bar {
     padding: 20px 0;
     z-index: 999;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+
+      @media (max-width: 768px) {
+      nav {
+        left: -#{$sidebar-width}; // Oculta el sidebar fuera de la pantalla
+        transition: left 0.3s ease-in-out;
+      }
+      // Una clase para mostrar el menú cuando esté activo
+      &.active {
+        nav {
+          left: 0; // Muestra el sidebar en la pantalla
+        }
+      }
+    }
 
     ul {
       list-style: none;
