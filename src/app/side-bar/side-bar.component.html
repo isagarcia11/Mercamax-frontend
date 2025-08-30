@@ -1,0 +1,27 @@
+<nav>
+  <ul>
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        Inicio
+      </a>
+    </li>
+    
+    <li>
+      <a class="has-submenu" 
+         (click)="$event.stopPropagation();toggleSubmenu('inventario')" 
+         [class.active]="activeSubmenu === 'inventario'">
+        Gestión de Inventario
+      </a>
+      <ul class="submenu" [ngClass]="{'active': activeSubmenu === 'inventario'}">
+        <li>
+          <a routerLink="/inventario/productos" routerLinkActive="active">Productos</a>
+        </li>
+        <li>
+          <a routerLink="/inventario/categorias" routerLinkActive="active">Mapas</a>
+        </li>
+      </ul>
+     
+  </ul>
+</nav>
+
+
