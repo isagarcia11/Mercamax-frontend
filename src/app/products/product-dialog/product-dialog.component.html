@@ -1,0 +1,84 @@
+<h1 mat-dialog-title>Añada sus productos</h1>
+<div mat-dialog-content>
+  <form #productForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.nombre" name="nombre" required #nombreField="ngModel">
+      <mat-error *ngIf="nombreField.invalid && nombreField.touched">
+        El nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Código de Barras</mat-label>
+      <input matInput [(ngModel)]="data.codigo_barras" name="codigo_barras" required #codigoBarrasField="ngModel">
+      <mat-error *ngIf="codigoBarrasField.invalid && codigoBarrasField.touched">
+        El código de barras es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+  <mat-label>Categoría</mat-label>
+  <mat-select [(ngModel)]="data.categoria" name="categoria" required #categoriaField="ngModel">
+    <mat-option *ngFor="let categoria of categorias" [value]="categoria.value">
+      {{ categoria.viewValue }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="categoriaField.invalid && categoriaField.touched">
+    La categoría es requerida
+  </mat-error>
+</mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput [(ngModel)]="data.descripcion" name="descripcion" required #descripcionField="ngModel">
+      <mat-error *ngIf="descripcionField.invalid && descripcionField.touched">
+        La descripción es requerida.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Precio de Venta</mat-label>
+      <input matInput type="number" [(ngModel)]="data.precio_venta" name="precio_venta" required min="0" #precioVentaField="ngModel">
+      <mat-error *ngIf="precioVentaField.invalid && precioVentaField.touched">
+        El precio de venta es requerido y debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Precio de Compra</mat-label>
+      <input matInput type="number" [(ngModel)]="data.precio_compra" name="precio_compra" required min="0" #precioCompraField="ngModel">
+      <mat-error *ngIf="precioCompraField.invalid && precioCompraField.touched">
+        El precio de compra es requerido y debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Stock</mat-label>
+      <input matInput type="number" [(ngModel)]="data.stock" name="stock" required min="0" #stockField="ngModel">
+      <mat-error *ngIf="stockField.invalid && stockField.touched">
+        El stock es requerido y debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Punto de Reorden</mat-label>
+      <input matInput type="number" [(ngModel)]="data.punto_reorden" name="punto_reorden" required min="0" #puntoReordenField="ngModel">
+      <mat-error *ngIf="puntoReordenField.invalid && puntoReordenField.touched">
+        El punto de reorden es requerido y debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Proveedor</mat-label>
+      <input matInput [(ngModel)]="data.proveedor" name="proveedor" required #proveedorField="ngModel">
+      <mat-error *ngIf="proveedorField.invalid && proveedorField.touched">
+        El proveedor es requerido.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button cdkFocusInitial (click)="onSave()" [disabled]="productForm.invalid">Guardar</button>
+</div>

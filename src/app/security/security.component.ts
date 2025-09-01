@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-security',
   imports: [],
+  standalone: true,
   templateUrl: './security.component.html',
   styleUrl: './security.component.scss'
 })

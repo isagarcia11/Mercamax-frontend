@@ -237,3 +237,10 @@ app-side-bar {
     }
   }
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.custom-dialog-container {
+  border-radius: 10px !important;
+  background-color: #f8f9fa !important;
+}
