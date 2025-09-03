@@ -38,13 +38,14 @@ export class ProductsComponent implements OnInit {
     newProduct: Product = {
     nombre: '',
     codigo_barras: '',
-    categoria: '',
+    categoria: null,
     descripcion: '',
     precio_venta: 0,
     precio_compra: 0,
-    stock: 0,
+    stock_minimo: 0,
+    stock_total: 0,
     punto_reorden: 0,
-    proveedor: ''
+    proveedor: null
   };
 
     stockValue: number = 0;
@@ -60,13 +61,14 @@ export class ProductsComponent implements OnInit {
     const newProduct: Product = {
       nombre: '',
       codigo_barras: '',
-      categoria: '',
+      categoria: null,
       descripcion: '',
       precio_venta: null,
       precio_compra: null,
-      stock: null,
+      stock_minimo: 0,
+      stock_total: 0,
       punto_reorden: null,
-      proveedor: ''
+      proveedor: null
     };
 
     const dialogRef = this.dialog.open(ProductDialogComponent, {
@@ -106,17 +108,17 @@ export class ProductsComponent implements OnInit {
 
     // Filtrar por estado de stock
     if (filters.stockStatus.outOfStock) {
-      tempFiltered = tempFiltered.filter(p => p.stock === 0);
+      tempFiltered = tempFiltered.filter(p => p.stock_total === 0);
     }
     if (filters.stockStatus.minStock) {
         // Ejemplo: Filtrar productos cuyo stock es igual o menor al punto de reorden
-        tempFiltered = tempFiltered.filter(p => p.stock !== null && p.punto_reorden !== null && p.stock <= p.punto_reorden);
+        tempFiltered = tempFiltered.filter(p => p.stock_minimo !== null && p.punto_reorden !== null && p.stock_minimo <= p.punto_reorden);
     }
     // Puedes añadir más lógica para 'aboveMin' y 'noStockControl'
 
     // Filtrar por categorías
     if (filters.categories.length > 0) {
-      tempFiltered = tempFiltered.filter(p => p.categoria && filters.categories.includes(p.categoria));
+      tempFiltered = tempFiltered.filter(p => p.categoria && filters.categories.includes(p.categoria.nombre));
     }
 
     this.filteredProducts = tempFiltered;
@@ -154,7 +156,7 @@ export class ProductsComponent implements OnInit {
    
     const precioVenta = product.precio_venta !== null ? product.precio_venta : 0;
     const precioCompra = product.precio_compra !== null ? product.precio_compra : 0;
-    const stock = product.stock !== null ? product.stock : 0;
+    const stock = product.stock_total !== null ? product.stock_total : 0;
     const puntoReorden = product.punto_reorden !== null ? product.punto_reorden : 0;
 
     this.stockValue += precioVenta * stock;
@@ -198,13 +200,14 @@ export class ProductsComponent implements OnInit {
       this.newProduct = {
         nombre: '',
         codigo_barras: '',
-        categoria: '',
+        categoria: null,
         descripcion: '',
         precio_venta: 0,
         precio_compra: 0,
-        stock: 0,
+       stock_minimo: 0,
+        stock_total: 0,
         punto_reorden: 0,
-        proveedor: ''
+        proveedor: null
       };
     });
   }
