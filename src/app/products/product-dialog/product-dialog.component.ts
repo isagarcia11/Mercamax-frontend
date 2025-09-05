@@ -2,7 +2,7 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
-import { Product } from '../../../interfaces/productos';
+import { Product } from '../../interfaces/productos';
 
 // Importaciones de Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -11,8 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatError, MatFormField } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
-import { CategoriaProducto } from '../../../interfaces/categoria-producto';
-import { CategoriaDropdown } from '../../../interfaces/categoria-dropdown';
+import { CategoriaProducto } from '../../interfaces/categoria-producto';
+import { CategoriaDropdown } from '../../interfaces/categoria-dropdown';
 
 
 

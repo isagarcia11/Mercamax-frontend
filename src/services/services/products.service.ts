@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../../interfaces/productos';
-import { CategoriaDropdown } from '../../interfaces/categoria-dropdown';
-import { CategoriaProducto } from '../../interfaces/categoria-producto';
+import { Product } from '../../app/interfaces/productos';
+import { CategoriaDropdown } from '../../app/interfaces/categoria-dropdown';
+import { CategoriaProducto } from '../../app/interfaces/categoria-producto';
 import { map } from 'rxjs/operators';
 
 @Injectable({

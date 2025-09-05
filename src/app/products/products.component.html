@@ -23,7 +23,7 @@
         <div class="tools">
           <button class="icon-button" (click)="openFiltersSidebar()">
             <i class="fas fa-filter"></i>
-            <span>Filtro</span>
+            <span>Filtros</span>
           </button>
           
           <button class="icon-button" (click)="exportProducts()">
@@ -77,7 +77,7 @@
               <td><input type="checkbox"></td>
               <td>{{ product.nombre }}<br><span>Cód.: {{ product.codigo_barras }}</span></td>
               <td>{{ product.categoria }}</td>
-              <td>{{ product.stock }}</td>
+              <td>{{ product.stock_minimo }}</td>
               <td>{{ product.precio_venta | currency:'COP':'symbol' }}</td>
               <td>
                 <label class="switch">

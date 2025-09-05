@@ -64,9 +64,9 @@ mat-form-field {
 // Estilos específicos para el botón Guardar
 button[mat-button] {
   font-weight: bold;
-  text-transform: uppercase;
   min-width: 100px;
   border-radius: 4px; 
+  
   
   &.mat-primary { // Para el botón 'Guardar'
     background-color: $mercamax-green; 

@@ -54,12 +54,21 @@
     </mat-form-field>
     
     <mat-form-field appearance="fill">
-      <mat-label>Stock</mat-label>
-      <input matInput type="number" [(ngModel)]="data.stock" name="stock" required min="0" #stockField="ngModel">
+      <mat-label>Stock Mínimo</mat-label>
+      <input matInput type="number" [(ngModel)]="data.stock_minimo" name="stock" required min="0" #stockField="ngModel">
       <mat-error *ngIf="stockField.invalid && stockField.touched">
         El stock es requerido y debe ser un número positivo.
       </mat-error>
     </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Stock Total</mat-label>
+      <input matInput type="number" [(ngModel)]="data.stock_total" name="stock" required min="0" #stockField="ngModel">
+      <mat-error *ngIf="stockField.invalid && stockField.touched">
+        El stock es requerido y debe ser un número positivo.
+      </mat-error>
+    </mat-form-field>
+
 
     <mat-form-field appearance="fill">
       <mat-label>Punto de Reorden</mat-label>

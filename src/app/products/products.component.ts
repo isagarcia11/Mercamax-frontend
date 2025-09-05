@@ -2,15 +2,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { ProductsService } from '../services/products.service';
+import { ProductsService } from '../../services/services/products.service';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../interfaces/productos';
+import { Product } from '../interfaces/productos';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { FiltersSidebarComponent } from './filters-sidebar/filters-sidebar.component';
-import { ProductFilters } from '../../interfaces/product-filters';
+import { ProductFilters } from '../interfaces/product-filters';
 
 @Component({
   selector: 'app-products',
@@ -204,7 +204,7 @@ export class ProductsComponent implements OnInit {
         descripcion: '',
         precio_venta: 0,
         precio_compra: 0,
-       stock_minimo: 0,
+        stock_minimo: 0,
         stock_total: 0,
         punto_reorden: 0,
         proveedor: null
