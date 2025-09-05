@@ -1,7 +1,34 @@
-import { Routes } from '@angular/router';
+// app.route.ts
+
+import { Routes, UrlSegment, UrlMatchResult } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { LayoutComponent } from './layout/layout.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordConfirmComponent } from './reset-password-confirm/reset-password-confirm.component';
+import { InviteUserComponent} from './invite-user/invite-user.component';
+
+// Un UrlMatcher personalizado que ignora mayúsculas y minúsculas
+export function activateAccountMatcher(segments: UrlSegment[]): UrlMatchResult | null {
+    if (segments.length === 3 && segments[0].path === 'activar-cuenta') {
+        const uid = segments[1].path;
+        const token = segments[2].path;
+        return {
+            consumed: segments,
+            posParams: {
+                uid: new UrlSegment(uid, {}),
+                token: new UrlSegment(token, {})
+            }
+        };
+    }
+    return null;
+}
 
 export const routes: Routes = [
-     { path: 'login', component: LoginComponent }
+    { path: 'login', component: LoginComponent },
+    {path: 'forgot-password', component: ForgotPasswordComponent},
+    { matcher: activateAccountMatcher, component: RegistrationComponent },
+    { path: 'reset-password-confirm/:uid/:token', component: ResetPasswordConfirmComponent},
+    { path: 'invite-user', component: InviteUserComponent },
+    { path: '', redirectTo: '/login', pathMatch: 'full' }
+
 ];
