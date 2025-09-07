@@ -1,92 +1,108 @@
+// header.component.ts
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { EventEmitter, Output } from '@angular/core';
-import { NotificationsService } from '../services/notifications.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationsService } from '../services/notifications.service';
+import { AuthService, User } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, MatSnackBarModule],
   providers: [NotificationsService],
   templateUrl: './header.component.html',
-   styleUrl: './header.component.scss'
-
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  userName: string = ''; //Se debe de recuperar del back
-
-  
+export class HeaderComponent implements OnInit {
+  userName: string = 'Usuario';
   @Output() toggleMenu = new EventEmitter<void>();
-
-  toggleSidebar() {
-    this.toggleMenu.emit();
-  }
-  
   isDropdownOpen: boolean = false;
   isNotificationsOpen: boolean = false;
   notifications: any[] = [];
   unreadNotifications: number = 0;
 
-  constructor(private notificationsService: NotificationsService) {}
+  constructor(
+    private notificationsService: NotificationsService,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
+    // Cargar usuario
+    this.loadUser();
     this.fetchNotifications();
   }
 
-  // Método para obtener las notificaciones del servicio
-  fetchNotifications() {
-    this.notificationsService.getNotifications().subscribe(
-      (data) => {
+  loadUser(): void {
+    this.authService.user$.subscribe({
+      next: (user: User | null) => {
+        this.userName = user ? user.username : 'Usuario';
+      },
+      error: (err) => {
+        this.snackBar.open(`Error al cargar usuario: ${err.message}`, 'Cerrar', { duration: 3000 });
+      }
+    });
+
+    // Cargar usuario si ya está autenticado
+    if (this.authService.isAuthenticated()) {
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        this.userName = currentUser.username;
+      }
+    }
+  }
+
+  toggleSidebar(): void {
+    this.toggleMenu.emit();
+  }
+
+  fetchNotifications(): void {
+    this.notificationsService.getNotifications().subscribe({
+      next: (data) => {
         this.notifications = data;
         this.updateUnreadCount();
       },
-      (error) => {
-        console.error('Error al obtener las notificaciones', error);
+      error: (error) => {
+        this.snackBar.open(`Error al obtener notificaciones: ${error.message}`, 'Cerrar', { duration: 3000 });
       }
-    );
+    });
   }
 
-  toggleDropdown() {
+  toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
     if (this.isNotificationsOpen) {
       this.isNotificationsOpen = false;
     }
   }
 
-  toggleNotifications(){
+  toggleNotifications(): void {
     this.isNotificationsOpen = !this.isNotificationsOpen;
-    if(this.isDropdownOpen){
-      this.isDropdownOpen=false;
+    if (this.isDropdownOpen) {
+      this.isDropdownOpen = false;
     }
   }
 
-  // Método para actualizar el contador de notificaciones no leídas
-  updateUnreadCount() {
+  updateUnreadCount(): void {
     this.unreadNotifications = this.notifications.filter(notif => !notif.read).length;
   }
 
-  // Método para marcar todas las notificaciones como leídas
-  markAllAsRead() {
-    // Llama a un método del servicio para actualizar el estado en el backend
-    this.notificationsService.markAllAsRead().subscribe(
-      () => {
-        // Si la llamada al backend es exitosa, actualiza el estado local
+  markAllAsRead(): void {
+    this.notificationsService.markAllAsRead().subscribe({
+      next: () => {
         this.notifications.forEach(notif => notif.read = true);
         this.updateUnreadCount();
+        this.snackBar.open('Notificaciones marcadas como leídas', 'Cerrar', { duration: 3000 });
       },
-      (error) => {
-        console.error('Error al marcar las notificaciones como leídas', error);
+      error: (error) => {
+        this.snackBar.open(`Error al marcar notificaciones: ${error.message}`, 'Cerrar', { duration: 3000 });
       }
-    );
+    });
   }
 
-  //Pendiente métod
-  logout() {
-    
-    console.log('Usuario ha cerrado sesión.');
+  logout(): void {
+    this.authService.logout();
+    this.snackBar.open('Sesión cerrada con éxito', 'Cerrar', { duration: 3000 });
     this.isDropdownOpen = false;
-
-}
+  }
 }

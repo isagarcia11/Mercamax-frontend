@@ -46,6 +46,7 @@ export class ProductsComponent implements OnInit {
   descripcion: '',
   precio_venta: 0,
   precio_compra: 0,
+  stock: 0,
   stock_minimo: 0,
   proveedor: null
   };
@@ -68,6 +69,7 @@ export class ProductsComponent implements OnInit {
       descripcion: '',
       precio_venta: 0,
       precio_compra: 0,
+      stock: 0,
       stock_minimo: 0,
       proveedor: null
     };
@@ -136,10 +138,26 @@ export class ProductsComponent implements OnInit {
   }
 
   getEstadisticas() {
-  this.productsService.getEstadisticas().subscribe(data => {
-    this.estadisticas = data;
-  });
-}
+    this.productsService.getEstadisticas().subscribe({
+      next: (data) => {
+        // Assign the values from the API to the component's properties
+        this.stockValue = data.valor_en_stock;
+        this.stockCost = data.costo_de_stock;
+        this.estimatedProfit = data.ganancia_estimada;
+        this.totalProductsCount = data.total_productos;
+        // The API does not provide these, so you would calculate them here if needed
+        this.calculateLocalCounts();
+        console.log('Estadísticas recibidas:', data);
+      },
+      error: (error) => {
+        console.error('Error al obtener estadísticas:', error);
+      }
+    });
+  }
+  calculateLocalCounts(): void {
+      this.lowStockCount = this.products.filter(p => p.stock !== undefined && p.stock_minimo !== undefined && p.stock <= p.stock_minimo).length;
+      this.outOfStockCount = this.products.filter(p => p.stock !== undefined && p.stock === 0).length;
+    }
 
   calculateSummary(): void {
     this.stockValue = 0;
@@ -183,6 +201,7 @@ export class ProductsComponent implements OnInit {
         descripcion: '',
         precio_venta: 0,
         precio_compra: 0,
+        stock: 0,
         stock_minimo: 0,
         proveedor: null
       };

@@ -41,15 +41,15 @@
 
       <div class="summary-container">
         <div class="summary-card">
-          <span class="value">{{ estadisticas.valor_en_stock | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ stockValue | currency:'COP':'symbol' }}</span>
           <span class="label">Valor en stock</span>
         </div>
         <div class="summary-card">
-          <span class="value">{{ estadisticas.costo_de_stock | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ stockCost| currency:'COP':'symbol' }}</span>
           <span class="label">Costo de stock</span>
         </div>
         <div class="summary-card">
-          <span class="value">{{ estadisticas.ganancia_estimada | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ estimatedProfit | currency:'COP':'symbol' }}</span>
           <span class="label">Ganancia estimada</span>
         </div>
         <div class="summary-card">

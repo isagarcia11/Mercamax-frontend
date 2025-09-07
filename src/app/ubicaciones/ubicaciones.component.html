@@ -23,7 +23,7 @@
           <td mat-cell *matCellDef="let ubicacion">{{ getCategoriaNombre(ubicacion.categoria) }}</td>
         </ng-container>
         <ng-container matColumnDef="parent_nombre">
-          <th mat-header-cell *matHeaderCellDef>Padre</th>
+          <th mat-header-cell *matHeaderCellDef>Ubicación principal</th>
           <td mat-cell *matCellDef="let ubicacion">{{ getParentNombre(ubicacion.parent) }}</td>
         </ng-container>
         <ng-container matColumnDef="capacidad_maxima">
@@ -73,7 +73,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Ubicación Padre</mat-label>
+          <mat-label>Ubicación principal</mat-label>
           <mat-select [(ngModel)]="ubicacionForm.parent" name="parent">
             <mat-option [value]="null">Ninguna</mat-option>
             <mat-option *ngFor="let padre of getUbicacionesPadre()" [value]="padre.id">{{ padre.nombre }}</mat-option>

@@ -11,6 +11,7 @@ export interface Product {
   descripcion: string;
   precio_venta: number;
   precio_compra: number;
+  stock: number;
   stock_minimo: number;
   proveedor: Proveedor | null;
 }
