@@ -68,7 +68,6 @@ export class AjusteInventarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // ➡️ Cargar todas las listas al iniciar
     this.cargarDatosIniciales();
   }
 
@@ -76,9 +75,9 @@ export class AjusteInventarioComponent implements OnInit {
     this.isLoading = true;
     this.ubicacionService.getAll().subscribe(data => this.ubicaciones = data);
     this.productoService.getProducts().subscribe(data => this.productos = data);
-    //this.loteService.getAll().subscribe(data => this.lotes = data);
+    this.loteService.getAll().subscribe(data => this.lotes = data);
 
-    // Cargar todos los StockItems y luego aplicar filtros
+   
     this.stockItemService.getAll().subscribe(data => {
       this.stockItems = data;
       this.aplicarFiltros(); // Aplica filtros iniciales (sin selección)
@@ -88,10 +87,9 @@ export class AjusteInventarioComponent implements OnInit {
 
   aplicarFiltros(): void {
     this.filteredStockItems = this.stockItems.filter(item => {
-      // ➡️ Lógica para verificar la Ubicación
       const ubicacionMatch = !this.ubicacionSeleccionada || item.ubicacion === this.ubicacionSeleccionada;
 
-      // ➡️ Lógica para verificar el Producto
+     
       const lote = this.lotes.find(l => l.id === item.lote);
       const productoMatch = !this.productoSeleccionado || (lote && lote.producto === this.productoSeleccionado);
       

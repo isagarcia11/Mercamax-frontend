@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../app/interfaces/productos';
+import { Proveedor } from '../../app/interfaces/proveedor';
 import { CategoriaDropdown } from '../../app/interfaces/categoria-dropdown';
 import { CategoriaProducto } from '../../app/interfaces/categoria-producto';
 import { map } from 'rxjs/operators';
@@ -11,19 +12,20 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductsService {
-  private apiUrl = 'https://tu-api.com/api/products';
+  private apiUrl = 'http://localhost:8000/api/inventario/productos/';
 
   constructor(private http: HttpClient) { }
 
-  getCategorias(): Observable<CategoriaDropdown[]> {
-    return this.http.get<CategoriaProducto[]>(this.apiUrl).pipe(
-      map(categorias => categorias.map(categoria => ({
-        value: categoria.id,
-        viewValue: categoria.nombre
-      })))
-    );
+  getCategories() {
+  return this.http.get<{id:number, nombre:string}[]>('http://127.0.0.1:8000/api/inventario/categorias/');
+}
+  getProveedor(){
+    return this.http.get<{id:number, nombre:string,contacto_nombre: string,
+      telefono:string,email: string}[]> ('http://127.0.0.1:8000/api/inventario/proveedores/')
   }
-
+  getEstadisticas(): Observable<any> {
+  return this.http.get<any>(`http://127.0.0.1:8000/api/inventario/estadisticas/`);
+}
   // C - Create (Crear un nuevo producto)
   createProduct(product: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product);

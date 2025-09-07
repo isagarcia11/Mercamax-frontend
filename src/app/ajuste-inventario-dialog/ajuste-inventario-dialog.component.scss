@@ -1,0 +1,60 @@
+/* Estilos generales para el contenido del diálogo */
+.mat-dialog-container {
+  font-family: 'Roboto', sans-serif;
+  color: #333; /* Texto oscuro para buena legibilidad */
+}
+
+/* Título del modal */
+.mat-dialog-title {
+  color: #2e7d32; /* Verde primario de Mercamax */
+  font-weight: bold;
+  font-size: 1.5em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+/* Contenido del modal */
+.mat-dialog-content {
+  padding: 0 24px;
+}
+
+.mat-dialog-content p {
+  color: #666; /* Texto gris para la cantidad en sistema */
+  font-size: 1em;
+  margin-bottom: 20px;
+}
+
+/* Estilos para los campos del formulario */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Estilos para los botones de acción */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+/* Botón de Cancelar */
+.mat-dialog-actions .mat-button {
+  color: #666;
+}
+
+/* Botón de Guardar Ajuste */
+.mat-dialog-actions .mat-raised-button.mat-primary {
+  background-color: #2e7d32; /* Verde primario de Mercamax */
+  color: white;
+  font-weight: bold;
+}
+
+/* Estilo para cuando el botón está deshabilitado */
+.mat-dialog-actions .mat-raised-button[disabled] {
+  background-color: #a5d6a7;
+  color: #f0f0f0;
+}

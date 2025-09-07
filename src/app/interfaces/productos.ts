@@ -7,11 +7,11 @@ export interface Product {
   nombre: string;
   codigo_barras: string;
   categoria: CategoriaProducto | null;
+  categoria_nombre: CategoriaProducto | null;
   descripcion: string;
-  precio_venta: number | null;
-  precio_compra: number | null;
-  stock_total: number | null;
-  stock_minimo: number | null;
-  punto_reorden: number | null;
+  precio_venta: number;
+  precio_compra: number;
+  stock: number;
+  stock_minimo: number;
   proveedor: Proveedor | null;
 }

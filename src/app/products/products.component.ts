@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { FiltersSidebarComponent } from './filters-sidebar/filters-sidebar.component';
 import { ProductFilters } from '../interfaces/product-filters';
+import { error } from 'console';
 
 @Component({
   selector: 'app-products',
@@ -25,6 +26,8 @@ export class ProductsComponent implements OnInit {
 
   products: Product[] = [];
 
+  estadisticas: any = {};
+
   filteredProducts: Product[] = [];
 
   searchText: string = '';
@@ -33,19 +36,19 @@ export class ProductsComponent implements OnInit {
 
   isEditing = false;
 
-   showForm: boolean = false; 
+  showForm: boolean = false; 
 
-    newProduct: Product = {
-    nombre: '',
-    codigo_barras: '',
-    categoria: null,
-    descripcion: '',
-    precio_venta: 0,
-    precio_compra: 0,
-    stock_minimo: 0,
-    stock_total: 0,
-    punto_reorden: 0,
-    proveedor: null
+  newProduct: Product = {
+  nombre: '',
+  codigo_barras: '',
+  categoria: null,
+  categoria_nombre: null,
+  descripcion: '',
+  precio_venta: 0,
+  precio_compra: 0,
+  stock: 0,
+  stock_minimo: 0,
+  proveedor: null
   };
 
     stockValue: number = 0;
@@ -62,12 +65,12 @@ export class ProductsComponent implements OnInit {
       nombre: '',
       codigo_barras: '',
       categoria: null,
+      categoria_nombre: null,
       descripcion: '',
-      precio_venta: null,
-      precio_compra: null,
+      precio_venta: 0,
+      precio_compra: 0,
+      stock: 0,
       stock_minimo: 0,
-      stock_total: 0,
-      punto_reorden: null,
       proveedor: null
     };
 
@@ -87,6 +90,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
+    this.getEstadisticas();
   }
 
 
@@ -105,17 +109,7 @@ export class ProductsComponent implements OnInit {
 
     // --- Lógica de filtrado de productos basada en 'filters' ---
     let tempFiltered = this.products;
-
-    // Filtrar por estado de stock
-    if (filters.stockStatus.outOfStock) {
-      tempFiltered = tempFiltered.filter(p => p.stock_total === 0);
-    }
-    if (filters.stockStatus.minStock) {
-        // Ejemplo: Filtrar productos cuyo stock es igual o menor al punto de reorden
-        tempFiltered = tempFiltered.filter(p => p.stock_minimo !== null && p.punto_reorden !== null && p.stock_minimo <= p.punto_reorden);
-    }
-    // Puedes añadir más lógica para 'aboveMin' y 'noStockControl'
-
+    
     // Filtrar por categorías
     if (filters.categories.length > 0) {
       tempFiltered = tempFiltered.filter(p => p.categoria && filters.categories.includes(p.categoria.nombre));
@@ -143,6 +137,31 @@ export class ProductsComponent implements OnInit {
     );
   }
 
+ getEstadisticas() {
+    this.productsService.getEstadisticas().subscribe({
+      next: (data) => {
+        // Assign the values from the API to the component's properties
+        this.stockValue = data.valor_en_stock;
+        this.stockCost = data.costo_de_stock;
+        this.estimatedProfit = data.ganancia_estimada;
+        this.totalProductsCount = data.total_productos;
+        // The API does not provide these, so you would calculate them here if needed
+        this.calculateLocalCounts();
+        console.log('Estadísticas recibidas:', data);
+      },
+      error: (error) => {
+        console.error('Error al obtener estadísticas:', error);
+      }
+    });
+  }
+
+  // --- Local Counts (since the API doesn't provide them) ---
+  calculateLocalCounts(): void {
+    this.lowStockCount = this.products.filter(p => p.stock !== undefined && p.stock_minimo !== undefined && p.stock <= p.stock_minimo).length;
+    this.outOfStockCount = this.products.filter(p => p.stock !== undefined && p.stock === 0).length;
+  }
+
+
   calculateSummary(): void {
     this.stockValue = 0;
     this.stockCost = 0;
@@ -150,26 +169,6 @@ export class ProductsComponent implements OnInit {
     this.lowStockCount = 0;
     this.outOfStockCount = 0;
     this.totalProductsCount = this.products.length;
-
-   this.products.forEach(product => {
-
-   
-    const precioVenta = product.precio_venta !== null ? product.precio_venta : 0;
-    const precioCompra = product.precio_compra !== null ? product.precio_compra : 0;
-    const stock = product.stock_total !== null ? product.stock_total : 0;
-    const puntoReorden = product.punto_reorden !== null ? product.punto_reorden : 0;
-
-    this.stockValue += precioVenta * stock;
-    this.stockCost += precioCompra * stock;
-    
-    if (stock <= puntoReorden) {
-        this.lowStockCount++;
-    }
-    
-    if (stock === 0) {
-        this.outOfStockCount++;
-    }
-});
 
     this.estimatedProfit = this.stockValue - this.stockCost;
   }
@@ -201,15 +200,18 @@ export class ProductsComponent implements OnInit {
         nombre: '',
         codigo_barras: '',
         categoria: null,
+        categoria_nombre: null,
         descripcion: '',
         precio_venta: 0,
         precio_compra: 0,
+        stock:0,
         stock_minimo: 0,
-        stock_total: 0,
-        punto_reorden: 0,
         proveedor: null
       };
-    });
+    }, error => {
+      console.error('Error al crear el producto', error)
+    }
+  );
   }
   
 

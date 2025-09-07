@@ -1,1 +1,33 @@
-<p>ajuste-inventario-dialog works!</p>
+<h2 mat-dialog-title>Ajuste de Inventario</h2>
+
+<div mat-dialog-content>
+  <p>Cantidad en sistema: {{ data.cantidadEnSistema }}</p>
+  
+  <form #ajusteForm="ngForm" (ngSubmit)="onSubmit()">
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Cantidad Contada</mat-label>
+      <input matInput type="number" [(ngModel)]="ajusteData.cantidad_contada" name="cantidadContada" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Motivo del Ajuste</mat-label>
+      <mat-select [(ngModel)]="ajusteData.motivo" name="motivo" required>
+        <mat-option *ngFor="let motivo of motivosAjuste" [value]="motivo">
+          {{ motivo }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Notas (Opcional)</mat-label>
+      <textarea matInput [(ngModel)]="ajusteData.notas" name="notas"></textarea>
+    </mat-form-field>
+    
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button color="primary" [disabled]="!ajusteForm.valid" (click)="onSubmit()">Guardar Ajuste</button>
+</div>

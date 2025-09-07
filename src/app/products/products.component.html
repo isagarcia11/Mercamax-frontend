@@ -41,18 +41,17 @@
 
       <div class="summary-container">
         <div class="summary-card">
-          <span class="value">{{ stockValue | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ estadisticas.valor_en_stock | currency:'COP':'symbol' }}</span>
           <span class="label">Valor en stock</span>
         </div>
         <div class="summary-card">
-          <span class="value">{{ stockCost | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ estadisticas.costo_de_stock | currency:'COP':'symbol' }}</span>
           <span class="label">Costo de stock</span>
         </div>
         <div class="summary-card">
-          <span class="value">{{ estimatedProfit | currency:'COP':'symbol' }}</span>
+          <span class="value">{{ estadisticas.ganancia_estimada | currency:'COP':'symbol' }}</span>
           <span class="label">Ganancia estimada</span>
         </div>
-
         <div class="summary-card">
           <span class="value">{{ totalProductsCount }}</span>
           <span class="label">Total productos</span>
@@ -75,8 +74,9 @@
           <tbody>
             <tr *ngFor="let product of filteredProducts">
               <td><input type="checkbox"></td>
-              <td>{{ product.nombre }}<br><span>Cód.: {{ product.codigo_barras }}</span></td>
-              <td>{{ product.categoria }}</td>
+              <td>{{ product.nombre }}<br>
+              <td>{{ product.codigo_barras }}</td>
+              <td>{{ product.categoria_nombre }}</td>
               <td>{{ product.stock_minimo }}</td>
               <td>{{ product.precio_venta | currency:'COP':'symbol' }}</td>
               <td>
