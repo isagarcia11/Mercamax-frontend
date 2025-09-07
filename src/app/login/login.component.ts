@@ -35,11 +35,17 @@ export class LoginComponent implements OnInit{
       rol: ['', Validators.required]
     });
     this.twoFactorForm = this.fb.group({
-      code: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]] // Valida que sean 6 dígitos
+      code: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]], // Valida que sean 6 dígitos
+      rememberDevice: [false]
     });
   }
 
   ngOnInit(): void {
+    this.cargarRoles();
+    const savedLogin = localStorage.getItem('login_data');
+    if (savedLogin) {
+      this.loginForm.patchValue(JSON.parse(savedLogin));
+    }
     this.cargarRoles();
     }
     cargarRoles(): void{
@@ -74,7 +80,7 @@ export class LoginComponent implements OnInit{
             this.showTwoFactor = true;
           } else if (response.token){
             localStorage.setItem('auth_token', response.token);
-            this.router.navigate(['/home']);
+            this.router.navigate(['/inventario/productos']);
           }
           this.loading = false;
         },
@@ -101,7 +107,7 @@ export class LoginComponent implements OnInit{
             confirmButtonText: 'Continuar'
           }).then(() => {
             localStorage.setItem('auth_token', response.token);
-            this.router.navigate(['/home']);
+            this.router.navigate(['/inventario/productos']);
           });
           this.loading = false;
         },

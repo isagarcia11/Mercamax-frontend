@@ -1,0 +1,98 @@
+<mat-sidenav-container class="products-sidenav-container">
+  <mat-sidenav #sidenav mode="over" position="end">
+    <app-filters-sidebar
+      (filtersApplied)="applyFilters($event)"
+      (closeSidebar)="sidenav.close()">
+    </app-filters-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="products-dashboard-content">
+    <div class="products-dashboard">
+
+      <div class="toolbar">
+        <div class="search-bar-container">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            placeholder="Artículo o código"
+            [(ngModel)]="searchText"
+            (input)="filterProducts()"
+          >
+        </div>
+
+        <div class="tools">
+          <button class="icon-button" (click)="openFiltersSidebar()">
+            <i class="fas fa-filter"></i>
+            <span>Filtros</span>
+          </button>
+          
+          <button class="icon-button" (click)="exportProducts()">
+            <i class="fas fa-file-export"></i>
+            <span>Exportar</span>
+          </button>
+        </div>
+
+        <div class="filter-actions">
+          <button class="add-product-button primary" (click)="openCreateProductDialog()">
+            <i class="fas fa-plus"></i> Añadir productos
+          </button>
+        </div>
+      </div>
+
+      <div class="summary-container">
+        <div class="summary-card">
+          <span class="value">{{ estadisticas.valor_en_stock | currency:'COP':'symbol' }}</span>
+          <span class="label">Valor en stock</span>
+        </div>
+        <div class="summary-card">
+          <span class="value">{{ estadisticas.costo_de_stock | currency:'COP':'symbol' }}</span>
+          <span class="label">Costo de stock</span>
+        </div>
+        <div class="summary-card">
+          <span class="value">{{ estadisticas.ganancia_estimada | currency:'COP':'symbol' }}</span>
+          <span class="label">Ganancia estimada</span>
+        </div>
+        <div class="summary-card">
+          <span class="value">{{ totalProductsCount }}</span>
+          <span class="label">Total productos</span>
+        </div>
+      </div>
+
+      <div class="products-table-container">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th><i class="fas fa-star"></i> Producto</th>
+              <th>Código</th>
+              <th>Categoría</th>
+              <th>Stock</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts">
+              <td><input type="checkbox"></td>
+              <td>{{ product.nombre }}<br>
+              <td>{{ product.codigo_barras }}</td>
+              <td>{{ product.categoria_nombre }}</td>
+              <td>{{ product.stock_minimo }}</td>
+              <td>{{ product.precio_venta | currency:'COP':'symbol' }}</td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </td>
+              <td>
+                <button class="btn btn-edit"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-delete"><i class="fas fa-trash-alt"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -6,6 +6,12 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordConfirmComponent } from './reset-password-confirm/reset-password-confirm.component';
 import { InviteUserComponent} from './invite-user/invite-user.component';
+import { UbicacionesComponent } from './ubicaciones/ubicaciones.component';
+import { LayoutComponent } from './layout/layout.component';
+import { ProductsComponent } from './products/products.component';
+import { AjusteInventarioComponent } from './ajuste-inventario/ajuste-inventario.component';
+import { ReportesComponent } from './reportes/reportes.component';
+
 
 // Un UrlMatcher personalizado que ignora mayúsculas y minúsculas
 export function activateAccountMatcher(segments: UrlSegment[]): UrlMatchResult | null {
@@ -23,12 +29,20 @@ export function activateAccountMatcher(segments: UrlSegment[]): UrlMatchResult |
     return null;
 }
 
+const children: Routes = [
+     { path: 'inventario/productos', component: ProductsComponent },
+     {path: 'inventario/ubicaciones', component: UbicacionesComponent},
+     {path: 'inventario/reportes', component: ReportesComponent},
+     {path: 'inventario/ajuste', component: AjusteInventarioComponent}
+];
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     {path: 'forgot-password', component: ForgotPasswordComponent},
     { matcher: activateAccountMatcher, component: RegistrationComponent },
     { path: 'reset-password-confirm/:uid/:token', component: ResetPasswordConfirmComponent},
     { path: 'invite-user', component: InviteUserComponent },
-    { path: '', redirectTo: '/login', pathMatch: 'full' }
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    {path: '', component: LayoutComponent,children},
 
 ];
