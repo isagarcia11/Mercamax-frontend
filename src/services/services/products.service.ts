@@ -1,53 +1,62 @@
-// src/app/products/products.service.ts
+// src/app/services/products.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../app/interfaces/productos';
-import { Proveedor } from '../../app/interfaces/proveedor';
-import { CategoriaDropdown } from '../../app/interfaces/categoria-dropdown';
 import { CategoriaProducto } from '../../app/interfaces/categoria-producto';
-import { map } from 'rxjs/operators';
+import { Proveedor } from '../../app/interfaces/proveedor';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  private apiUrl = 'http://localhost:8000/api/inventario/productos/';
+  // --- URLs Base Corregidas ---
+   private apiUrl = 'http://127.0.0.1:8000/api/productos';
 
-  constructor(private http: HttpClient) { }
+   constructor(private http: HttpClient) { }
 
-  getCategories() {
-  return this.http.get<{id:number, nombre:string}[]>('http://127.0.0.1:8000/api/inventario/categorias/');
-}
-  getProveedor(){
-    return this.http.get<{id:number, nombre:string,contacto_nombre: string,
-      telefono:string,email: string}[]> ('http://127.0.0.1:8000/api/inventario/proveedores/')
-  }
-  getEstadisticas(): Observable<any> {
-  return this.http.get<any>(`http://127.0.0.1:8000/api/inventario/estadisticas/`);
-}
-  // C - Create (Crear un nuevo producto)
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+
+  // --- MÉTODOS CRUD PARA PRODUCTOS ---
+  createProduct(productData: Product): Observable<Product> {
+    return this.http.post<Product>(`${this.apiUrl}/productos/`, productData);
   }
 
-  // R - Read (Leer todos los productos)
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(`${this.apiUrl}/productos/`);
   }
   
-  // R - Read (Leer un solo producto por ID)
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}/`);
+    return this.http.get<Product>(`${this.apiUrl}/productos/${id}/`);
   }
 
-  // U - Update (Actualizar un producto existente)
-  updateProduct(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}/`, product);
+  updateProduct(id: number, productData: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/productos/${id}/`, productData);
   }
 
-  // D - Delete (Borrar un producto)
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}/productos/${id}/`);
+  }
+
+  // --- MÉTODOS PARA DATOS AUXILIARES ---
+  getCategories(): Observable<CategoriaProducto[]> {
+    return this.http.get<CategoriaProducto[]>(`${this.apiUrl}/categorias-producto/`);
+  }
+
+  getProveedor(): Observable<Proveedor[]> {
+    return this.http.get<Proveedor[]>(`${this.apiUrl}/proveedores/`);
+  }
+
+  // --- MÉTODOS PARA REPORTES Y ANÁLISIS ---
+  getStockDetails(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/productos/${id}/stock-details/`);
+  }
+
+  getStockValuationReport(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/bodega/reports/stock-valuation/`);
+  }
+
+  getEstadisticas(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/estadisticas/`);
   }
 }

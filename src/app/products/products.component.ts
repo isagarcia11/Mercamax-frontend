@@ -1,243 +1,175 @@
 // src/app/products/products.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { ProductsService } from '../../services/services/products.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms'; 
+
+// Interfaces y Servicios
 import { Product } from '../interfaces/productos';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
+import { CategoriaProducto } from '../interfaces/categoria-producto';
+import { ProductsService } from '../../services/services/products.service';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { FiltersSidebarComponent } from './filters-sidebar/filters-sidebar.component';
-import { ProductFilters } from '../interfaces/product-filters';
-import { error } from 'console';
+
+// Importaciones de Angular Material
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   standalone: true,
   styleUrls: ['./products.component.scss'],
-  imports: [CommonModule, FormsModule, MatDialogModule, MatSidenavModule,FiltersSidebarComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    FiltersSidebarComponent
+  ]
 })
 export class ProductsComponent implements OnInit {
 
-   @ViewChild('sidenav') sidenav!: MatSidenav;
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  products: Product[] = [];
-
-  estadisticas: any = {};
-
+  // --- Propiedades para los Datos ---
+  allProducts: Product[] = [];
   filteredProducts: Product[] = [];
+  allCategories: CategoriaProducto[] = [];
 
+  // --- Propiedades para las Tarjetas de Resumen ---
+  stockValue: number = 0;
+  stockCost: number = 0;
+  estimatedProfit: number = 0;
+  totalProductsCount: number = 0;
+
+  // --- Propiedades de Estado y UI ---
   searchText: string = '';
+  isLoading: boolean = true;
 
-  selectedProduct: Product | null = null; 
-
-  isEditing = false;
-
-  showForm: boolean = false; 
-
-  newProduct: Product = {
-  nombre: '',
-  codigo_barras: '',
-  categoria: null,
-  categoria_nombre: null,
-  descripcion: '',
-  precio_venta: 0,
-  precio_compra: 0,
-  stock: 0,
-  stock_minimo: 0,
-  proveedor: null
-  };
-
-    stockValue: number = 0;
-    stockCost: number = 0;
-    estimatedProfit: number = 0;
-    lowStockCount: number = 0;
-    outOfStockCount: number = 0;
-    totalProductsCount: number = 0;
-  
-  constructor(private productsService: ProductsService, private dialog: MatDialog) { }
-
-  openCreateProductDialog(): void {
-    const newProduct: Product = {
-      nombre: '',
-      codigo_barras: '',
-      categoria: null,
-      categoria_nombre: null,
-      descripcion: '',
-      precio_venta: 0,
-      precio_compra: 0,
-      stock: 0,
-      stock_minimo: 0,
-      proveedor: null
-    };
-
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
-      width: '600px',
-      panelClass: 'custom-dialog-container',
-      data: newProduct 
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.newProduct = result; 
-        this.createProduct(); 
-      }
-    });
-  }
+  constructor(
+    private productsService: ProductsService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-    this.getProducts();
-    this.getEstadisticas();
+    this.loadInitialData();
   }
 
-
-  openFiltersSidebar(): void {
-    if (this.sidenav) {
-      this.sidenav.open();
-    }
-  }
-
-  // Método para aplicar los filtros del sidebar
-  applyFilters(filters: ProductFilters): void {
-    console.log('Filtros aplicados:', filters);
-    // Aquí iría la lógica real para filtrar this.products
-    // Por ahora, solo cerraremos el sidebar
-    this.sidenav.close(); 
-
-    // --- Lógica de filtrado de productos basada en 'filters' ---
-    let tempFiltered = this.products;
+  loadInitialData(): void {
+    this.isLoading = true;
     
-    // Filtrar por categorías
-    if (filters.categories.length > 0) {
-      tempFiltered = tempFiltered.filter(p => p.categoria && filters.categories.includes(p.categoria.nombre));
-    }
-
-    this.filteredProducts = tempFiltered;
-    // La búsqueda de texto se aplicaría sobre this.filteredProducts después de esto
-    this.filterProducts(); // Vuelve a aplicar el filtro de texto si existe
-  }
-
-  toggleForm(): void {
-    this.showForm = !this.showForm;
-  }
-
-  getProducts(): void {
-    this.productsService.getProducts().subscribe(
-      (data) => {
-        this.products = data;
-        this.filteredProducts = data;
-        this.calculateSummary();
+    // 1. Cargar las categorías primero para poder usarlas en la tabla
+    this.productsService.getCategories().subscribe({
+      next: (categories) => {
+        this.allCategories = categories;
+        
+        // 2. Una vez que tenemos las categorías, cargamos los productos
+        this.productsService.getProducts().subscribe({
+          next: (products) => {
+            this.allProducts = products;
+            this.filteredProducts = products;
+            this.totalProductsCount = products.length;
+            this.calculateSummaryMetrics(); // Calculamos los totales
+            this.isLoading = false; // Terminamos de cargar
+          },
+          error: (err) => {
+            console.error('Error al obtener los productos:', err);
+            this.isLoading = false;
+          }
+        });
       },
-      (error) => {
-        console.error('Error al obtener los productos:', error);
-      }
-    );
-  }
-
- getEstadisticas() {
-    this.productsService.getEstadisticas().subscribe({
-      next: (data) => {
-        // Assign the values from the API to the component's properties
-        this.stockValue = data.valor_en_stock;
-        this.stockCost = data.costo_de_stock;
-        this.estimatedProfit = data.ganancia_estimada;
-        this.totalProductsCount = data.total_productos;
-        // The API does not provide these, so you would calculate them here if needed
-        this.calculateLocalCounts();
-        console.log('Estadísticas recibidas:', data);
-      },
-      error: (error) => {
-        console.error('Error al obtener estadísticas:', error);
+      error: (err) => {
+        console.error('Error al obtener las categorías:', err);
+        this.isLoading = false;
       }
     });
   }
+  
+  // Calcula los valores para las tarjetas de resumen
+  calculateSummaryMetrics(): void {
+    this.stockValue = this.allProducts.reduce(
+      (sum, product) => sum + ((product.stock_total || 0) * product.precio_venta), 0
+    );
 
-  // --- Local Counts (since the API doesn't provide them) ---
-  calculateLocalCounts(): void {
-    this.lowStockCount = this.products.filter(p => p.stock !== undefined && p.stock_minimo !== undefined && p.stock <= p.stock_minimo).length;
-    this.outOfStockCount = this.products.filter(p => p.stock !== undefined && p.stock === 0).length;
-  }
-
-
-  calculateSummary(): void {
-    this.stockValue = 0;
-    this.stockCost = 0;
-    this.estimatedProfit = 0;
-    this.lowStockCount = 0;
-    this.outOfStockCount = 0;
-    this.totalProductsCount = this.products.length;
+    this.stockCost = this.allProducts.reduce(
+      (sum, product) => sum + ((product.stock_total || 0) * (product.costo_promedio_ponderado || 0)), 0
+    );
 
     this.estimatedProfit = this.stockValue - this.stockCost;
   }
 
+  // "Traduce" el ID de la categoría a su nombre para mostrarlo en la tabla
+  getCategoryName(categoryId: number): string {
+    const category = this.allCategories.find(cat => cat.id === categoryId);
+    return category ? category.nombre : 'Sin Categoría';
+  }
+
+  // Filtra la lista de productos basado en el texto de búsqueda
   filterProducts(): void {
-    const query = this.searchText.toLowerCase().trim();
-    if (!query) {
-      this.filteredProducts = this.products;
+    if (!this.searchText) {
+      this.filteredProducts = this.allProducts;
     } else {
-      this.filteredProducts = this.products.filter(product =>
+      const query = this.searchText.toLowerCase().trim();
+      this.filteredProducts = this.allProducts.filter(product =>
         product.nombre.toLowerCase().includes(query) ||
-        product.codigo_barras.toLowerCase().includes(query)
+        product.codigo_barras.includes(query)
       );
     }
   }
 
-  exportProducts(): void {
-    // Logic to export products, e.g., to CSV or Excel
-    console.log('Exporting products...');
-  }
+  // --- Métodos de Acciones del Usuario ---
 
+  openCreateProductDialog(): void {
+    const dialogRef = this.dialog.open(ProductDialogComponent, {
+      width: '600px',
+      data: {} 
+    });
 
-  // Lógica para crear un producto
-  createProduct(): void {
-    this.productsService.createProduct(this.newProduct).subscribe(() => {
-      this.getProducts();
-     
-      this.newProduct = {
-        nombre: '',
-        codigo_barras: '',
-        categoria: null,
-        categoria_nombre: null,
-        descripcion: '',
-        precio_venta: 0,
-        precio_compra: 0,
-        stock:0,
-        stock_minimo: 0,
-        proveedor: null
-      };
-    }, error => {
-      console.error('Error al crear el producto', error)
-    }
-  );
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadInitialData(); // Recargamos todos los datos para reflejar el cambio
+      }
+    });
   }
   
-
-  // Lógica para editar un producto
-  editProduct(product: Product): void {
-    this.isEditing = true;
-    this.selectedProduct = { ...product }; // Crea una copia para evitar mutar el original
-  }
-
-  // Lógica para actualizar un producto
-  updateProduct(): void {
-    if (this.selectedProduct && this.selectedProduct.id !== undefined) {
-      this.productsService.updateProduct(this.selectedProduct.id, this.selectedProduct).subscribe(() => {
-        this.getProducts();
-        this.isEditing = false;
-        this.selectedProduct = null;
-      });
+  viewProduct(productId?: number): void {
+    if (productId) {
+      console.log(`Navegando al detalle del producto con ID: ${productId}`);
+      // Aquí iría la lógica para navegar a una nueva ruta, ej: this.router.navigate(['/products', productId]);
     }
   }
 
-  // Lógica para borrar un producto
-  deleteProduct(id: number | undefined): void {
-    if (id !== undefined) {
-      this.productsService.deleteProduct(id).subscribe(() => {
-        this.getProducts();
+  editProduct(product: Product, event: MouseEvent): void {
+    event.stopPropagation(); // Evita que el clic active el viewProduct de la fila
+    console.log('Editando producto:', product);
+    // Lógica para abrir el diálogo en modo edición
+    // const dialogRef = this.dialog.open(ProductDialogComponent, { width: '600px', data: { ...product } });
+    // ...
+  }
+
+  deleteProduct(productId: number | undefined, event: MouseEvent): void {
+    event.stopPropagation(); // Evita que el clic active el viewProduct de la fila
+    if (productId && confirm('¿Estás seguro de que quieres eliminar este producto del catálogo?')) {
+      this.productsService.deleteProduct(productId).subscribe(() => {
+        console.log('Producto eliminado');
+        this.loadInitialData(); // Recargamos todos los datos
       });
     }
+  }
+  
+  openFiltersSidebar(): void {
+    this.sidenav.open();
+  }
+
+  exportProducts(): void {
+    console.log('Exportando productos...');
+  }
+
+  applyFilters(filters: any): void {
+    console.log('Filtros avanzados aplicados:', filters);
+    this.sidenav.close();
   }
 }
