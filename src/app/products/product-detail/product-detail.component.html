@@ -1,0 +1,47 @@
+<div *ngIf="isLoading" class="loading-indicator">
+      <mat-spinner></mat-spinner>
+      <p>Cargando detalle del producto...</p>
+    </div>
+
+    <div *ngIf="!isLoading && product" class="product-detail-container">
+      <h1>Detalle de: {{ product.nombre }}</h1>
+      
+      <section class="info-section">
+        <h2>Información General</h2>
+        <ul>
+          <li><strong>Código de Barras:</strong> {{ product.codigo_barras }}</li>
+          <li><strong>Precio de Venta:</strong> {{ product.precio_venta | currency:'COP':'symbol':'1.0-0' }}</li>
+          <li><strong>Stock Mínimo (Alerta):</strong> {{ product.stock_minimo }}</li>
+          <li><strong>Stock Total (Calculado):</strong> {{ product.stock_total }}</li>
+          <li><strong>Costo Promedio (Calculado):</strong> {{ product.costo_promedio_ponderado | currency:'COP':'symbol':'1.0-2' }}</li>
+        </ul>
+      </section>
+
+      <section class="stock-section">
+        <h2>Distribución del Stock</h2>
+        <div *ngIf="stockDetails.length > 0; else noStock">
+          <table class="stock-table">
+            <thead>
+              <tr>
+                <th>Ubicación</th>
+                <th>Código del Lote</th>
+                <th>Fecha de Caducidad</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of stockDetails">
+                <td>{{ item.ubicacion_nombre }}</td>
+                <td>{{ item.lote_codigo }}</td>
+                <td>{{ item.fecha_caducidad }}</td>
+                <td>{{ item.cantidad }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noStock>
+          <p>Este producto no tiene stock registrado en ninguna ubicación.</p>
+        </ng-template>
+      </section>
+    </div>
+

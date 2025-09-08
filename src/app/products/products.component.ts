@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
+import { RouterModule } from '@angular/router'; 
 
 // Interfaces y Servicios
 import { Product } from '../interfaces/productos';
@@ -27,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    RouterModule,
     FiltersSidebarComponent
   ]
 })

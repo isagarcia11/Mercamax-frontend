@@ -59,4 +59,5 @@ export class ProductsService {
   getEstadisticas(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/estadisticas/`);
   }
+
 }

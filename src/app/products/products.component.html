@@ -1,11 +1,9 @@
-
 <mat-sidenav-container class="products-sidenav-container">
   <mat-sidenav #sidenav mode="over" position="end">
-    <app-filters-sidebar 
-      (filtersApplied)="applyFilters($event)" 
+    <app-filters-sidebar
+      (filtersApplied)="applyFilters($event)"
       (closeSidebar)="sidenav.close()">
     </app-filters-sidebar>
-
   </mat-sidenav>
 
   <mat-sidenav-content class="products-dashboard-content">
@@ -14,10 +12,10 @@
       <div class="toolbar">
         <div class="search-bar-container">
           <i class="fas fa-search"></i>
-          <input 
-            type="text" 
-            placeholder="Buscar por nombre o código" 
-            [(ngModel)]="searchText" 
+          <input
+            type="text"
+            placeholder="Buscar por nombre o código"
+            [(ngModel)]="searchText"
             (input)="filterProducts()">
         </div>
         <div class="tools">
@@ -57,7 +55,7 @@
       </div>
 
       <div class="products-table-container">
-        
+
         <div *ngIf="isLoading" class="loading-indicator">
           <mat-spinner></mat-spinner>
           <p>Cargando productos...</p>
@@ -80,7 +78,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of filteredProducts" (click)="viewProduct(product.id)">
+            <tr *ngFor="let product of filteredProducts" [routerLink]="['/products', product.id]">
               <td>{{ product.nombre }}</td>
               <td>{{ product.codigo_barras }}</td>
               <td>{{ getCategoryName(product.categoria) }}</td>
@@ -92,10 +90,10 @@
               <td>{{ product.costo_promedio_ponderado | currency:'COP':'symbol':'1.0-0' }}</td>
               <td>{{ product.precio_venta | currency:'COP':'symbol':'1.0-0' }}</td>
               <td>
-                <button class="btn btn-icon" (click)="editProduct(product, $event)">
+                <button class="btn btn-icon" (click)="editProduct(product, $event); $event.stopPropagation()">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-icon btn-delete" (click)="deleteProduct(product.id, $event)">
+                <button class="btn btn-icon btn-delete" (click)="deleteProduct(product.id, $event); $event.stopPropagation()">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </td>

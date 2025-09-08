@@ -1,0 +1,115 @@
+/* --- General Styles --- */
+.product-detail-container {
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #004d40; /* Dark green for branding */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* --- Loading Indicator --- */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 1rem;
+  font-size: 1.2rem;
+  color: #757575;
+}
+
+/* --- Section Styling --- */
+.info-section,
+.stock-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #444;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* --- Product Information List --- */
+.info-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    font-size: 1rem;
+    line-height: 1.8;
+    border-bottom: 1px solid #eee;
+    padding: 0.5rem 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: #004d40;
+      font-weight: 600;
+      display: inline-block;
+      width: 250px;
+    }
+  }
+}
+
+/* --- Stock Table --- */
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+
+  th, td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  th {
+    background-color: #004d40;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease-in-out;
+    &:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+    &:hover {
+      background-color: #e0f2f1;
+    }
+  }
+
+  td {
+    color: #555;
+  }
+}
+
+.no-stock {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+  padding: 2rem;
+}

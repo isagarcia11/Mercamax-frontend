@@ -6,9 +6,11 @@ import { SecurityComponent } from './security/security.component';
 import { UbicacionesComponent } from './ubicaciones/ubicaciones.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { AjusteInventarioComponent } from './ajuste-inventario/ajuste-inventario.component';
+import { ProductDetailComponent } from './products/product-detail/product-detail.component';
 
 const children: Routes = [
      { path: 'inventario/productos', component: ProductsComponent },
+     {path: 'inventario/producto/detalle', component: ProductDetailComponent},
      {path: 'inventario/ubicaciones', component: UbicacionesComponent},
      {path: 'inventario/reportes', component: ReportesComponent},
      {path: 'inventario/ajuste', component: AjusteInventarioComponent}
