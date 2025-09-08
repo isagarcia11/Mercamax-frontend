@@ -7,24 +7,27 @@ import { Proveedor } from '../../app/interfaces/proveedor';
 import { CategoriaDropdown } from '../../app/interfaces/categoria-dropdown';
 import { CategoriaProducto } from '../../app/interfaces/categoria-producto';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  private apiUrl = 'http://localhost:8000/api/inventario/productos/';
+  //private apiUrl = 'http://localhost:8000/api/inventario/productos/';
 
-  constructor(private http: HttpClient) { }
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) { } 
 
   getCategories() {
-  return this.http.get<{id:number, nombre:string}[]>('http://127.0.0.1:8000/api/inventario/categorias/');
+  return this.http.get<{id:number, nombre:string}[]>('http://127.0.0.1:8000/api/inventario/categorias');
 }
   getProveedor(){
     return this.http.get<{id:number, nombre:string,contacto_nombre: string,
-      telefono:string,email: string}[]> ('http://127.0.0.1:8000/api/inventario/proveedores/')
+      telefono:string,email: string}[]> ('http://127.0.0.1:8000/api/inventario/proveedores')
   }
   getEstadisticas(): Observable<any> {
-  return this.http.get<any>(`http://127.0.0.1:8000/api/inventario/estadisticas/`);
+  return this.http.get<any>('http://127.0.0.1:8000/api/inventario/estadisticas');
 }
   // C - Create (Crear un nuevo producto)
   createProduct(product: Product): Observable<Product> {
@@ -33,7 +36,7 @@ export class ProductsService {
 
   // R - Read (Leer todos los productos)
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}/inventario/productos/`);
   }
   
   // R - Read (Leer un solo producto por ID)

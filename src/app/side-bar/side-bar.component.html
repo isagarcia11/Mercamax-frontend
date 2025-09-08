@@ -1,28 +1,27 @@
 <nav>
-  <ul>  
-    <li>
-      <a class="has-submenu" 
-         (click)="$event.stopPropagation();toggleSubmenu('inventario')" 
-         [class.active]="activeSubmenu === 'inventario'">
-        Gestión de Inventario
-      </a>
-      <ul class="submenu" [ngClass]="{'active': activeSubmenu === 'inventario'}">
-        <li>
-          <a [routerLink]="['/inventario/productos']" routerLinkActive="active">Productos</a>
-        </li>
-        <li>
-          <a [routerLink]="['/inventario/ubicaciones']" routerLinkActive="active">Ubicaciones</a>
-        </li>
+  <ul>
+    <!-- Menú principal -->
+    <ng-container *ngFor="let item of menuItems">
+      <li *ngIf="(isVisible(item) | async)">
+        <a class="has-submenu"
+           (click)="$event.stopPropagation(); toggleSubmenu(item.label)"
+           [class.active]="activeSubmenu === item.label">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+        </a>
 
-        <li>
-          <a [routerLink]="['/inventario/reportes']" routerLinkActive="active">Reportes</a>
-        </li>
-
-         <li>
-          <a [routerLink]="['/inventario/ajuste']" routerLinkActive="active">Ajuste de inventario</a>
-        </li>
-      </ul>
-     
+        <!-- Submenús -->
+        <ul class="submenu" [ngClass]="{'active': activeSubmenu === item.label}">
+          <ng-container *ngFor="let sub of item.submenu">
+            <li *ngIf="(isVisible(sub) | async)">
+              <a [routerLink]="[sub.path]" routerLinkActive="active">
+                <mat-icon>{{ sub.icon }}</mat-icon>
+                {{ sub.label }}
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-container>
   </ul>
 </nav>
-

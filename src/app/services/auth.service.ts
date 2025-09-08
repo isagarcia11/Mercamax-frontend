@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface User {
@@ -94,6 +94,18 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     return this.userSubject.value;
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this.user$.pipe(
+      map(user => user?.rol === 'GERENTE_SUPERMERCADO')
+    );
+  }
+
+  hasRole(roles: string[]): Observable<boolean> {
+    return this.user$.pipe(
+      map(user => user?.rol ? roles.includes(user.rol) : false)
+    );
   }
 
   private handleError(error: any): Observable<never> {
