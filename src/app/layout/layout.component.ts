@@ -1,6 +1,7 @@
 
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
@@ -13,7 +14,14 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
   imports: [
     RouterOutlet,
     HeaderComponent,
-    SideBarComponent
+    SideBarComponent, 
+    CommonModule 
   ]
 })
-export class LayoutComponent { }
+export class LayoutComponent { 
+    isSidebarActive: boolean = false;
+
+  toggleSidebar() {
+    this.isSidebarActive = !this.isSidebarActive;
+  }
+}

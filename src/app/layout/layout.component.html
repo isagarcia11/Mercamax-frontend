@@ -1,7 +1,7 @@
-<div class="main-container">
-  <app-header></app-header>
+<div class="main-container" [class.sidebar-active]="isSidebarActive">
+  <app-header (toggleMenu)="toggleSidebar()"></app-header>
   <div class="content-container">
-    <app-side-bar></app-side-bar>
+    <app-side-bar [ngClass]="{'active': isSidebarActive}"></app-side-bar>
     <main class="main-content">
       <router-outlet></router-outlet>
     </main>

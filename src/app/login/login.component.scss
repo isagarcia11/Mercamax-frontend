@@ -1,5 +1,5 @@
+@use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
 
 $primary-color: #00bf63; 
 $text-color-dark: #333;
@@ -61,14 +61,14 @@ p {
   margin-bottom: 1.75rem;
   text-align: left;
 
-
-
-  input {
-    width: 91%;
+  input, select{
+    width: 100%;
     padding: 1.1rem;
     border: 1px solid $border-color;
     border-radius: 8px;
     font-size: 1rem;
+    font-family: 'Poppins';
+    box-sizing: border-box;
     transition: border-color 0.3s;
 
     &:focus {
@@ -171,8 +171,93 @@ button {
      font-family: 'Poppins';
   }
 }
+.login-card .back-link {
+  text-align: center;   // centra el enlace
+  margin-top: 20px;     // separa del botón
+}
+
+.login-card .back-link a {
+  color: $primary-color;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+// ------------------------------------
+// Media Queries para diseño responsivo
+// ------------------------------------
+
+// Para pantallas de hasta 768px (tabletas y móviles)
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1.5rem; // Reduce el padding general
+  }
+
+  .login-card {
+    padding: 2rem; // Reduce el padding de la tarjeta
+    // En pantallas más pequeñas, el max-width se ajusta para aprovechar el espacio
+    max-width: 90%;
+  }
+
+  h2 {
+    font-size: 1.75rem; // Reduce el tamaño del título
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 2rem; // Reduce el margen del párrafo
+  }
+
+  .form-group input, .form-group select, button {
+    padding: 0.9rem; // Reduce el padding de los inputs y el botón
+    font-size: 0.95rem; // Reduce el tamaño de la fuente
+  }
+
+  .logo img {
+    max-width: 150px; // Reduce el tamaño del logo
+  }
+
+  .forgot-password {
+    font-size: 0.85rem; // Reduce el tamaño de la fuente
+  }
+}
+
+// Para pantallas muy pequeñas (móviles)
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1rem; // Reduce aún más el padding
+  }
+
+  .login-card {
+    padding: 1.5rem; // Reduce el padding de la tarjeta
+    max-width: 100%; // Ocupa todo el ancho disponible
+  }
+
+  h2 {
+    font-size: 1.5rem; // Reduce el tamaño del título
+  }
+
+  p {
+    font-size: 0.9rem; // Reduce el tamaño del párrafo
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem; // Reduce el margen del grupo de formulario
+  }
+
+  .login-footer {
+    font-size: 0.9rem; // Reduce el tamaño del pie de página
+    margin-top: 1.5rem;
+  }
 }
