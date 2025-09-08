@@ -31,7 +31,7 @@ export interface TwoFactorResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://mercamax-backend.onrender.com/auth/';
+  private apiUrl = 'https://mercamax-backend.onrender.com/api/auth/';
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
