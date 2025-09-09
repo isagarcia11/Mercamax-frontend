@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-invite-user',
@@ -30,7 +31,7 @@ export class InviteUserComponent implements OnInit {
   }
 
   loadRoles() {
-    this.http.get<any[]>('http://localhost:8000/api/users/api/roles/').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/users/api/roles/`).subscribe({
       next: (data) => {
         this.roles = data;
         this.loadingRoles = false;
@@ -56,7 +57,7 @@ export class InviteUserComponent implements OnInit {
       'Authorization': `Token ${token}`
     });
 
-    this.http.post('http://127.0.0.1:8000/api/users/admin/invite/', this.inviteForm.value, { headers })
+    this.http.post(`${environment.apiUrl}/users/admin/invite/`, this.inviteForm.value, { headers })
       .subscribe({
         next: () => {
           this.successMessage = 'Invitación enviada exitosamente ✅';

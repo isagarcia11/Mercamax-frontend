@@ -4,17 +4,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CategoriaUbicacion } from '../interfaces/categoria-ubicacion';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaubicacionService {
-  private apiUrl = 'http://localhost:8000/api/bodega/categorias-ubicacion/';
+  private apiUrl = environment.apiUrl;
+
 
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<CategoriaUbicacion[]> {
-    return this.http.get<CategoriaUbicacion[]>(this.apiUrl).pipe(
+    return this.http.get<CategoriaUbicacion[]>(`${this.apiUrl}/bodega/categorias-ubicacion/`).pipe(
       catchError(this.handleError)
     );
   }

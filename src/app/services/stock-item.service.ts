@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StockItem } from '../../app/interfaces/stock-item'; 
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StockItemService {
-  private apiUrl = 'https://tu-api.com/bodega/stockitems/'; // ➡️ Endpoint real de tu API
+  
+   private apiUrl = `${environment.apiUrl}/bodega/stockitems/`;
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +19,7 @@ export class StockItemService {
    * @returns Un Observable con la lista de StockItem.
    */
   getAll(): Observable<StockItem[]> {
-    return this.http.get<StockItem[]>(this.apiUrl);
+    return this.http.get<StockItem[]>(`${this.apiUrl}`);
   }
 
   /**
@@ -27,7 +29,7 @@ export class StockItemService {
    * @returns Un Observable con el ítem de stock creado.
    */
   create(stockItem: StockItem): Observable<StockItem> {
-    return this.http.post<StockItem>(this.apiUrl, stockItem);
+    return this.http.post<StockItem>(`${this.apiUrl}`, stockItem);
   }
 
   /**

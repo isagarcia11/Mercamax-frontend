@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Lote } from '../../app/interfaces/lote';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoteService {
-  private apiUrl = 'https://tu-api.com/bodega/lotes/'; // ➡️ Endpoint real de tu API
+  private apiUrl = environment.apiUrl;
+ 
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +19,7 @@ export class LoteService {
    * @returns Un Observable con la lista de lotes.
    */
   getAll(): Observable<Lote[]> {
-    return this.http.get<Lote[]>(this.apiUrl);
+    return this.http.get<Lote[]>(environment.apiUrl);
   }
 
   /**
@@ -27,7 +29,7 @@ export class LoteService {
    * @returns Un Observable con el lote creado.
    */
   create(lote: Lote): Observable<Lote> {
-    return this.http.post<Lote>(this.apiUrl, lote);
+    return this.http.post<Lote>(environment.apiUrl, lote);
   }
 
   /**
@@ -38,7 +40,7 @@ export class LoteService {
    * @returns Un Observable con el lote actualizado.
    */
   update(id: number, lote: Lote): Observable<Lote> {
-    return this.http.put<Lote>(`${this.apiUrl}${id}/`, lote);
+    return this.http.put<Lote>(`${environment.apiUrl}${id}/`, lote);
   }
 
   /**
@@ -48,6 +50,6 @@ export class LoteService {
    * @returns Un Observable con la respuesta de la eliminación.
    */
   delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}${id}/`);
+    return this.http.delete(`${environment.apiUrl}${id}/`);
   }
 }

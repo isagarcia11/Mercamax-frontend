@@ -3,24 +3,25 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Ubicacion } from '../../app/interfaces/ubicacion';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UbicacionService {
- private apiUrl = 'http://localhost:8000/api/bodega/ubicaciones/';
- private tiposUrl = 'http://localhost:8000/api/bodega/tipos-ubicacion/';
+ private apiUrl = `${environment.apiUrl}/bodega/ubicaciones/`;
+ private tiposUrl = `${environment.apiUrl}/bodega/tipos-ubicacion/`;
 
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Ubicacion[]> {
-    return this.http.get<Ubicacion[]>(this.apiUrl).pipe(
+    return this.http.get<Ubicacion[]>(`${this.apiUrl}`).pipe(
       catchError(this.handleError)
     );
   }
 
   getTipos(): Observable<{ value: string, label: string }[]> {
-    return this.http.get<{ value: string, label: string }[]>(this.tiposUrl).pipe(
+    return this.http.get<{ value: string, label: string }[]>(`${this.tiposUrl}`).pipe(
       catchError(this.handleError)
     );
   }
@@ -32,7 +33,7 @@ export class UbicacionService {
   }
 
   create(ubicacion: Ubicacion): Observable<Ubicacion> {
-    return this.http.post<Ubicacion>(this.apiUrl, ubicacion).pipe(
+    return this.http.post<Ubicacion>(`${this.apiUrl}`, ubicacion).pipe(
       catchError(this.handleError)
     );
   }

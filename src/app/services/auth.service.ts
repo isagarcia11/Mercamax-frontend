@@ -31,7 +31,7 @@ export interface TwoFactorResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://mercamax-backend.onrender.com/api/auth/';
+  private apiUrl = environment.apiUrl;
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   login(credentials: { username: string, password: string }): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}login/`, credentials).pipe(
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login/`, credentials).pipe(
       tap((response: LoginResponse) => {
         if (response.token && response.username) {
           localStorage.setItem('auth_token', response.token);
@@ -65,7 +65,7 @@ export class AuthService {
     const headers = new HttpHeaders({
       Authorization: `Token ${payload.temp_token}`
     });
-    return this.http.post<TwoFactorResponse>(`${this.apiUrl}verify-2fa/`, { code: payload.code }, { headers }).pipe(
+    return this.http.post<TwoFactorResponse>(`${this.apiUrl}/api/auth/verify-2fa/`, { code: payload.code }, { headers }).pipe(
       tap((response: TwoFactorResponse) => {
         if (response.token && response.username) {
           localStorage.setItem('auth_token', response.token);
