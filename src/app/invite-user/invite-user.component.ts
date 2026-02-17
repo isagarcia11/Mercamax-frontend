@@ -56,7 +56,7 @@ export class InviteUserComponent implements OnInit {
       'Authorization': `Token ${token}`
     });
 
-    this.http.post('http://127.0.0.1:8000/api/users/admin/invite/', this.inviteForm.value, { headers })
+    this.http.post('https://mercamax-backend.onrender.com/api/users/admin/invite/', this.inviteForm.value, { headers })
       .subscribe({
         next: () => {
           this.successMessage = 'Invitación enviada exitosamente ✅';

@@ -25,7 +25,7 @@ export class ForgotPasswordComponent {
 
     onSubmit() {
   if (this.form.valid) {
-    this.http.post('http://localhost:8000/api/users/password/reset/', this.form.value)
+    this.http.post('https://mercamax-backend.onrender.com/api/users/password/reset/', this.form.value)
       .subscribe({
         next: (res: any) => {
           // Mostrar mensaje bonito en lugar de alert()

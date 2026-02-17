@@ -20,14 +20,14 @@ export class ProductsService {
   constructor(private http: HttpClient) { } 
 
   getCategories() {
-  return this.http.get<{id:number, nombre:string}[]>('http://127.0.0.1:8000/api/inventario/categorias');
+  return this.http.get<{id:number, nombre:string}[]>('https://mercamax-backend.onrender.com/api/inventario/categorias');
 }
   getProveedor(){
     return this.http.get<{id:number, nombre:string,contacto_nombre: string,
-      telefono:string,email: string}[]> ('http://127.0.0.1:8000/api/inventario/proveedores')
+      telefono:string,email: string}[]> ('https://mercamax-backend.onrender.com/api/inventario/proveedores')
   }
   getEstadisticas(): Observable<any> {
-  return this.http.get<any>('http://127.0.0.1:8000/api/inventario/estadisticas');
+  return this.http.get<any>('https://mercamax-backend.onrender.com/api/inventario/estadisticas');
 }
   // C - Create (Crear un nuevo producto)
   createProduct(product: Product): Observable<Product> {

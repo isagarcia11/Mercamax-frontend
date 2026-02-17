@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit{
     }
     cargarRoles(): void{
       this.loadingRoles = true;
-      this.http.get<{ value: string; view_value: string }[]>('http://localhost:8000/api/users/api/roles/')
+      this.http.get<{ value: string; view_value: string }[]>('https://mercamax-backend.onrender.com/api/users/api/roles/')
       .subscribe({
         next: (roles) => {
           console.log('Roles cargados:', roles);
